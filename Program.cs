@@ -38,13 +38,11 @@ namespace Module11Final
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
             // Подключаем контроллеры сообщений и кнопок
-            services.AddTransient<DefaultMessagesController>();
             services.AddTransient<InlineKeyboardController>();
             services.AddTransient<TextMessagesController>();
             services.AddTransient<InlineKeyboardController>();
-
+            services.AddTransient<UnsupportedMessagesController>();
             services.AddSingleton<IStorage, MemoryStorage>();
-
             AppSettings appSettings = BuildAppSettings();
             services.AddSingleton(BuildAppSettings());
         }

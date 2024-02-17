@@ -30,16 +30,17 @@ namespace Module11Final.Controllers
             _memoryStorage.GetSession(callbackQuery.From.Id).BotActionType = callbackQuery.Data;
 
             // Генерим информационное сообщение
-            string languageText = callbackQuery.Data switch
+            string botMode = callbackQuery.Data switch
             {
+                
                 "symbolsCount" => " Считаем количество символов во введенной строке",
-                "twoNumbers" => " Сравниваем два числа (вводить через запятую)",
+                "twoNumbers" => " Вычисляем сумму двух чисел (вводить через пробел)",
                 _ => String.Empty
             };
 
             // Отправляем в ответ уведомление о выборе
             await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id,
-                $"<b>Выбранный режим бота - {languageText}.{Environment.NewLine}</b>" +
+                $"<b>Выбранный режим бота - {botMode}.{Environment.NewLine}</b>" +
                 $"{Environment.NewLine}Режим можно поменять в главном меню.", cancellationToken: ct, parseMode: ParseMode.Html);
         }
     }

@@ -18,18 +18,21 @@ namespace Module11Final
         // Контроллеры различных видов сообщений
         private InlineKeyboardController _inlineKeyboardController;
         private TextMessagesController _textMessagesController;
-        private DefaultMessagesController _defaultMessagesController;
+        private UnsupportedMessagesController _unsupportedMessagesController;
+
 
         public Bot(
             ITelegramBotClient telegramClient,
             InlineKeyboardController inlineKeyboardController,
             TextMessagesController textMessagesController,
-            DefaultMessagesController defaultMessagesController)
+            UnsupportedMessagesController unsupportedMessagesController
+            )
         {
             _telegramClient = telegramClient;
             _inlineKeyboardController = inlineKeyboardController;
             _textMessagesController = textMessagesController;
-            _defaultMessagesController = defaultMessagesController;
+            _unsupportedMessagesController = unsupportedMessagesController;
+
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,7 +40,8 @@ namespace Module11Final
             _telegramClient.StartReceiving(
                 HandleUpdateAsync,
                 HandleErrorAsync,
-                new ReceiverOptions() { AllowedUpdates = { } }, // Здесь выбираем, какие обновления хотим получать. В данном случае - разрешены все
+                // В строке ниже выбираем, какие обновления хотим получать. В данном случае было задумано текст и нажатия на кнопки, но оно почему-то продолжало реагировать на всё
+                new ReceiverOptions() { AllowedUpdates = [UpdateType.Message, UpdateType.CallbackQuery] }, 
                 cancellationToken: stoppingToken);
 
             Console.WriteLine("Бот запущен.");
@@ -61,9 +65,12 @@ namespace Module11Final
                         await _textMessagesController.Handle(update.Message, cancellationToken);
                         return;
                     default:
-                        await _defaultMessagesController.Handle(update.Message, cancellationToken);
+                        await _unsupportedMessagesController.Handle(update.Message, cancellationToken);
                         return;
                 }
+
+                
+                
             }
         }
 

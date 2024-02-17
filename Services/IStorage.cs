@@ -5,9 +5,7 @@ namespace Module11Final.Services
 {
     public interface IStorage
     {
-        /// <summary>
-        /// Получение сессии пользователя по идентификатору
-        /// </summary>
+        // Получение сессии пользователя по идентификатору
         Session GetSession(long chatId);
     }
 }

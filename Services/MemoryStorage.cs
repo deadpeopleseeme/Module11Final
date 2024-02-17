@@ -10,9 +10,7 @@ namespace Module11Final.Services
 {
     public class MemoryStorage : IStorage
     {
-        /// <summary>
-        /// Хранилище сессий
-        /// </summary>
+        // Хранилище сессий
         private readonly ConcurrentDictionary<long, Session> _sessions;
 
         public MemoryStorage()
