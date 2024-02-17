@@ -1,16 +1,8 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Module11Final.Models;
 using Telegram.Bot.Types.Enums;
 using Module11Final.Services;
-using System.Threading;
-
 
 namespace Module11Final.Controllers
 {
@@ -53,26 +45,15 @@ namespace Module11Final.Controllers
                     switch (_memoryStorage.GetSession(message.Chat.Id).BotActionType)
                     {
                         case "symbolsCount":
-                            await _telegramClient.SendTextMessageAsync(message.From.Id, $"Длина сообщения,  знаков: {message.Text.Length}", cancellationToken: ct);
+                            await _telegramClient.SendTextMessageAsync(message.From.Id, SymbolsCounter.SymbolsCount(message.Text), cancellationToken: ct);
                             return;
 
                         case "twoNumbers":
-                            string[] numbers = message.Text.Split(' ');
-
-                            // проверяем, разбивается ли строка на 2, и если да, то числа ли введены в этой строке. числа пусть будут int, в задаче иного не указано
-                            if (numbers.Length != 2 || !int.TryParse(numbers[0], out int number1) || !int.TryParse(numbers[01], out int number2))
-                            {
-                                await _telegramClient.SendTextMessageAsync(message.Chat.Id, $"Только 2 целых числа и только через пробел!", cancellationToken: ct);
-                            }
-                            else
-                            {
-                                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, $"{number1 + number2}", cancellationToken: ct);
-                            }
+                            await _telegramClient.SendTextMessageAsync(message.From.Id, TwoNumbersCounter.TwoNumbersCount(message.Text), cancellationToken: ct);
                             return;
                     }
                     break;
             }
         }
     }
-
 }
